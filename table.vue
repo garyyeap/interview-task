@@ -2,6 +2,7 @@
   <table class="table table-zebra table-pin-rows">
     <thead>
       <tr class="bg-base-300">
+        <th>#</th>
         <th>Name</th>
         <th>Gender</th>
         <th>Nationality</th>
@@ -15,9 +16,10 @@
         </th>
       </tr>
     </thead>
-    <tbody>
-      <tr v-for="record in records">
-        <th>{{ record.first_name }} {{ record.last_name }}</th>
+    <tbody class="css-serial">
+      <tr v-for="(record, index) in records">
+        <td>{{ index + 1 }}</td>
+        <td>{{ record.first_name }} {{ record.last_name }}</td>
         <td>{{ record.gender }}</td>
         <td>{{ record.nationality }}</td>
         <td>{{ record.division }}</td>

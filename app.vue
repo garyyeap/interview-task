@@ -3,7 +3,7 @@
     <div class="card bg-base-100 min-w-full lg:card-bordered lg:shadow-xl lg:h-5/6 lg:min-w-[960px] lg:overflow-x-hidden">
       <div class="card-body p-0 h-full">
         <h2 class="card-title">
-          <p class="pl-4 pt-2 text-xl">XTERRA Triathlon Cup Result</p>
+          <p class="pl-4 pt-2 text-xl">XTERRA Triathlon Cup Results</p>
           <label class="swap swap-rotate absolute right-2 top-2">
             <input 
               data-toggle-theme="dim,light" 
