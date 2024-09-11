@@ -20,6 +20,7 @@
           <span class="loading loading-spinner loading-lg" />
         </div>
         <div v-else-if="status === IS_READY" class="overflow-auto">
+          <Table :records="records" />
         </div>
         <div v-else="status === IS_ERROR" class="m-5 flex flex-col items-center justify-center h-full">
           Something went wrong, please try again.
@@ -34,6 +35,7 @@
 <script setup async>
   import { ref, onMounted } from 'vue';
   import { themeChange } from 'theme-change'
+  import Table from './table.vue';
   
   const IS_ERROR = 3;
   const IS_LOADING = 2;
