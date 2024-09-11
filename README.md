@@ -1,3 +1,12 @@
+# Notes from Gary
+
+* The setup has't changed. Run `npm install` and `npm run dev` to start the server.
+* The live page can be visited at [https://garyyeap.github.io/interview-task/](https://garyyeap.github.io/interview-task/).
+* I'm new to Vue3 and Tailwind CSS, so I'm not sure if it's already following best practices.
+* The conditions in `triathlon.js` were sourced online, and I'm not sure whether they are correct. It seems the invalid times from the API are just "00:00:00" and "23:59:59." I think I was misled by the term "i.e." but I've kept it anyway.
+* TODO: 1. Test cases 2. TypeScript
+
+
 # XTERRA Application Task
 
 ### The project
