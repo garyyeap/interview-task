@@ -50,12 +50,13 @@
   </table>
 </template>
 <script setup>
-  import { ref, onMounted } from 'vue';
+  import { ref, onBeforeUpdate, onMounted } from 'vue';
   import { isValidTotalTime, isValidSwimTime, isValidRunTime, isValidBikeTime } from './triathlon';
   import { formatedTimeToSeconds } from './time';
   
-  const props = defineProps(['records']);
+  const props = defineProps(['records', 'searchKey']);
   const records = ref([]);
+  let normalizedRecords = [];
 
   const expandSplits = (record) => {
     record.splits.forEach(item => {
@@ -76,24 +77,42 @@
 
     data[0]['fastest_' + type] = true;
   };
-  
+
+  onBeforeUpdate(() => {
+
+    if (props.searchKey.length > 1) {
+      const searchKey = props.searchKey.toUpperCase();
+
+      records.value = Array.from(normalizedRecords).filter(({ first_name, last_name }) => {
+        return (first_name + ' ' + last_name).toUpperCase().includes(searchKey);
+      }).sort((a, b) => { // consider to change to toSorted() when possible to aviod side effect
+        return formatedTimeToSeconds(a.total_time) - formatedTimeToSeconds(b.total_time);
+      });
+    } else {
+      records.value = Array.from(normalizedRecords).sort((a, b) => { // consider to change to toSorted() when possible to aviod side effect
+        return formatedTimeToSeconds(a.total_time) - formatedTimeToSeconds(b.total_time);
+      });
+    }
+  });
+
   onMounted(async () => {
-    const sortedRecords = props.records.filter((record) => { 
+    
+    normalizedRecords = props.records.filter((record) => { 
       const isValid = isValidTotalTime(formatedTimeToSeconds(record.total_time));
 
       if (isValid) expandSplits(record);
 
       return isValid;
-    }).sort((a, b) => { // consider to change to toSorted() when possible to aviod side effect
-      return formatedTimeToSeconds(a.total_time) - formatedTimeToSeconds(b.total_time);
     });
     
-    const _records = Array.from(sortedRecords); 
+    const _records = Array.from(normalizedRecords); 
 
     markFastest(_records, 'swim', isValidSwimTime);
     markFastest(_records, 'run', isValidRunTime);
     markFastest(_records, 'bike', isValidBikeTime);
         
-    records.value = sortedRecords;
+    records.value = Array.from(normalizedRecords).sort((a, b) => { // consider to change to toSorted() when possible to aviod side effect
+      return formatedTimeToSeconds(a.total_time) - formatedTimeToSeconds(b.total_time);
+    });
   });
 </script>

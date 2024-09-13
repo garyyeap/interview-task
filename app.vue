@@ -3,8 +3,8 @@
     <div class="card bg-base-100 min-w-full lg:card-bordered lg:shadow-xl lg:h-5/6 lg:min-w-[960px] lg:overflow-x-hidden">
       <div class="card-body p-0 h-full">
         <h2 class="card-title">
-          <p class="pl-4 pt-2 text-xl">XTERRA Triathlon Cup Results</p>
-          <label class="swap swap-rotate absolute right-2 top-2">
+          <input type="text" @input="updateSearchKey" placeholder="Search here" class="input input-sm mt-2 ml-2 align-center input-bordered w-full max-w-xs" />
+          <label class="swap swap-rotate absolute right-2 top-3">
             <input 
               data-toggle-theme="dim,light" 
               data-act-class="ACTIVECLASS" 
@@ -20,7 +20,7 @@
           <span class="loading loading-spinner loading-lg" />
         </div>
         <div v-else-if="status === IS_READY" class="overflow-auto">
-          <Table :records="records" />
+          <Table :records="records" :searchKey="searchKey"/>
         </div>
         <div v-else="status === IS_ERROR" class="m-5 flex flex-col items-center justify-center h-full">
           Something went wrong, please try again.
@@ -42,6 +42,7 @@
   const IS_READY = 1;
   const records = ref([]);
   const status = ref(IS_LOADING);
+  const searchKey = ref('');
   const url = 'https://core.xterraplanet.com/api/application-task/cee4389b-1668-4e39-b500-3572f0982b09';
 
   const fetchRecords = async () => {
@@ -56,6 +57,21 @@
       status.value = IS_READY;
     } catch (error) {
       status.value = IS_ERROR;
+    }
+  };
+
+  let lastValue = '';
+  let timer = null;
+  const updateSearchKey = (e) => {
+    if (timer) clearTimeout(timer);
+
+    const value = e.target.value.trim();
+
+    if (lastValue != value) {
+      timer = setTimeout(() => {
+        searchKey.value = value;
+        lastValue = value;
+      }, 500);
     }
   };
 
